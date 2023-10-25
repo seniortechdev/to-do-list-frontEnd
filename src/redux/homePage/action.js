@@ -1,14 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosInstance, getTasksEndPoint, addTaskEndPoint } from "../api";
+import { axiosInstance, getTasksEndPoint,
+    addTaskEndPoint, delTaskEndPoint
+} from "../api";
 
 
 export const addTask = createAsyncThunk("hompage/addTask", async( params , { rejectWithValue })=> {
     const data = {
-        title: params.title,
-        description: params.description
+        title: params.newTask.title,
+        description: params.newTask.description
     }
     try {
-        const response = await axiosInstance.post(addTaskEndPoint, data, {
+        const response = await axiosInstance.post(addTaskEndPoint, { data }, {
             headers: {
                 "Content-Type": "application/json",
             }
@@ -25,8 +27,17 @@ export const getTasks = createAsyncThunk("hompage/listTask", async() => {
 });
 
 export const removeTask = createAsyncThunk("homePage/removeTask", async (id, { rejectWithValue }) => {
+    const data = {
+        id: id
+    }
     try {
-        const response = await axiosInstance.post()
+        const response = await axiosInstance.delete( delTaskEndPoint, { data }, {
+            headers: {
+                accept: "application/json",
+                "Content-Type": "application/json"
+            }
+        })
+        return response.data._id
     } catch(error) {
         return rejectWithValue(error.message)
     }

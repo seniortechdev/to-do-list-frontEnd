@@ -7,6 +7,7 @@ const initialState = {
     loading: false,
     errorGettingTasks: null,
     errorAddingTask: null,
+    errorRemovingTask: null,
 }
 
 const tasksSlice = createSlice({
@@ -51,8 +52,19 @@ const tasksSlice = createSlice({
         builder.addCase(removeTask.fulfilled, (state,action) => {
             state.success = true;
             state.loading = false;
-            state.tasks = state.tasks.filter(task => task.id !== action.payload)
+            state.tasks = state.tasks.filter(task => task._id !== action.payload)
+            state.errorRemovingTask = null;
         });
+        builder.addCase(removeTask.pending, (state) => {
+            state.success = null;
+            state.loading = true;
+            state.errorRemovingTask = null;
+        });
+        builder.addCase(removeTask.rejected, (state, action) => {
+            state.success = null;
+            state.loading = false;
+            state.errorRemovingTask = action.payload;
+        })
     }
 });
 

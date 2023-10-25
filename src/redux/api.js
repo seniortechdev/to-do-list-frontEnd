@@ -6,5 +6,6 @@ export const axiosInstance = axios.create({
 });
 
 //  route endpoints
-export const getTasksEndPoint = `tasks/list`;
-export const addTaskEndPoint = `tasks/addTask`;
+export const getTasksEndPoint = `list`;
+export const addTaskEndPoint = `addTask`;
+export const delTaskEndPoint = `deleteTask`
